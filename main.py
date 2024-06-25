@@ -2,15 +2,19 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 import uvicorn
 from repositories.cliente_repo import ClienteRepo
-from repositories.produto_repo import ProdutoRepo
+from repositories.filme_repo import FilmeRepo
+from repositories.genero_repo import GeneroRepo
+# from repositories.produto_repo import ProdutoRepo
 from routes import main_routes, cliente_routes
 from util.auth import atualizar_cookie_autenticacao
 from util.exceptions import configurar_excecoes
 
-ProdutoRepo.criar_tabela()
-ProdutoRepo.inserir_produtos_json("sql/produtos.json")
+# ProdutoRepo.criar_tabela()
+# ProdutoRepo.inserir_produtos_json("sql/produtos.json")
+GeneroRepo.criar_tabela()
 ClienteRepo.criar_tabela()
-ClienteRepo.inserir_clientes_json("sql/clientes.json")
+FilmeRepo.criar_tabela()
+# ClienteRepo.inserir_clientes_json("sql/clientes.json")
 
 app = FastAPI()
 app.middleware(middleware_type="http")(atualizar_cookie_autenticacao)

@@ -9,7 +9,7 @@ from ler_html import ler_html
 from dtos.novo_cliente_dto import NovoClienteDTO
 from models.cliente_model import Cliente
 from repositories.cliente_repo import ClienteRepo
-from repositories.produto_repo import ProdutoRepo
+# from repositories.produto_repo import ProdutoRepo
 from util.auth import (
     conferir_senha,
     gerar_token,
@@ -31,17 +31,17 @@ def get_html(arquivo: str):
     return response
 
 
-@router.get("/")
-def get_root(request: Request, cliente_logado: Cliente = Depends(obter_cliente_logado)):
-    produtos = ProdutoRepo.obter_todos()
-    return templates.TemplateResponse(
-        "index.html",
-        {
-            "request": request,
-            "cliente": cliente_logado,
-            "produtos": produtos,
-        },
-    )
+# @router.get("/")
+# def get_root(request: Request, cliente_logado: Cliente = Depends(obter_cliente_logado)):
+#     produtos = ProdutoRepo.obter_todos()
+#     return templates.TemplateResponse(
+#         "index.html",
+#         {
+#             "request": request,
+#             "cliente": cliente_logado,
+#             "produtos": produtos,
+#         },
+#     )
 
 
 @router.get("/contato")
@@ -107,46 +107,46 @@ def get_entrar(
     )
 
 
-@router.get("/produto/{id:int}")
-def get_produto(
-    request: Request, id: int, cliente_logado: Cliente = Depends(obter_cliente_logado)
-):
-    produto = ProdutoRepo.obter_um(id)
-    return templates.TemplateResponse(
-        "produto.html",
-        {
-            "request": request,
-            "cliente": cliente_logado,
-            "produto": produto,
-        },
-    )
+# @router.get("/produto/{id:int}")
+# def get_produto(
+#     request: Request, id: int, cliente_logado: Cliente = Depends(obter_cliente_logado)
+# ):
+#     produto = ProdutoRepo.obter_um(id)
+#     return templates.TemplateResponse(
+#         "produto.html",
+#         {
+#             "request": request,
+#             "cliente": cliente_logado,
+#             "produto": produto,
+#         },
+#     )
 
 
-@router.get("/buscar")
-def get_buscar(
-    request: Request,
-    q: str,
-    p: int = 1,
-    tp: int = 6,
-    o: int = 1,
-    cliente_logado: Cliente = Depends(obter_cliente_logado),
-):
-    produtos = ProdutoRepo.obter_busca(q, p, tp, o)
-    qtde_produtos = ProdutoRepo.obter_quantidade_busca(q)
-    qtde_paginas = math.ceil(qtde_produtos / float(tp))
-    return templates.TemplateResponse(
-        "buscar.html",
-        {
-            "request": request,
-            "cliente": cliente_logado,
-            "produtos": produtos,
-            "quantidade_paginas": qtde_paginas,
-            "tamanho_pagina": tp,
-            "pagina_atual": p,
-            "termo_busca": q,
-            "ordem": o,
-        },
-    )
+# @router.get("/buscar")
+# def get_buscar(
+#     request: Request,
+#     q: str,
+#     p: int = 1,
+#     tp: int = 6,
+#     o: int = 1,
+#     cliente_logado: Cliente = Depends(obter_cliente_logado),
+# ):
+#     produtos = ProdutoRepo.obter_busca(q, p, tp, o)
+#     qtde_produtos = ProdutoRepo.obter_quantidade_busca(q)
+#     qtde_paginas = math.ceil(qtde_produtos / float(tp))
+#     return templates.TemplateResponse(
+#         "buscar.html",
+#         {
+#             "request": request,
+#             "cliente": cliente_logado,
+#             "produtos": produtos,
+#             "quantidade_paginas": qtde_paginas,
+#             "tamanho_pagina": tp,
+#             "pagina_atual": p,
+#             "termo_busca": q,
+#             "ordem": o,
+#         },
+#     )
 
 
 @router.post("/post_entrar", response_class=JSONResponse)

@@ -13,6 +13,9 @@ router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
 
+
+
+
 @router.get("/pedidos")
 def get_root(request: Request, cliente_logado: Cliente = Depends(obter_cliente_logado)):
     checar_autorizacao(cliente_logado)

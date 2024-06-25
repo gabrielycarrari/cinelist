@@ -2,10 +2,6 @@ SQL_CRIAR_TABELA = """
     CREATE TABLE IF NOT EXISTS cliente (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nome TEXT NOT NULL,
-        cpf TEXT NOT NULL UNIQUE,
-        data_nascimento DATE NOT NULL,
-        endereco TEXT NOT NULL,
-        telefone TEXT NOT NULL UNIQUE,
         email TEXT NOT NULL UNIQUE,
         senha TEXT NOT NULL,
         admin BOOLEAN NOT NULL,
@@ -13,19 +9,19 @@ SQL_CRIAR_TABELA = """
 """
 
 SQL_INSERIR = """
-    INSERT INTO cliente(nome, cpf, data_nascimento, endereco, telefone, email, senha, admin)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO cliente(nome, email, senha, admin)
+    VALUES (?, ?, ?, ?)
 """
 
 SQL_OBTER_TODOS = """
-    SELECT id, nome, cpf, data_nascimento, endereco, telefone, email, admin
+    SELECT id, nome, email, senha, admin
     FROM cliente
     ORDER BY nome
 """
 
 SQL_ALTERAR = """
     UPDATE cliente
-    SET nome=?, cpf=?, data_nascimento=?, endereco=?, telefone=?, email=?
+    SET nome=?, email=?
     WHERE id=?
 """
 
@@ -41,19 +37,19 @@ SQL_EXCLUIR = """
 """
 
 SQL_OBTER_UM = """
-    SELECT id, nome, cpf, data_nascimento, endereco, telefone, email, admin
+    SELECT id, nome, email, admin
     FROM cliente
     WHERE id=?
 """
 
 SQL_OBTER_POR_EMAIL = """
-    SELECT id, nome, cpf, data_nascimento, endereco, telefone, email, senha, admin
+    SELECT id, nome, email, senha, admin
     FROM cliente
     WHERE email=?
 """
 
 SQL_OBTER_POR_TOKEN = """
-    SELECT id, nome, cpf, data_nascimento, endereco, telefone, email, admin
+    SELECT id, nome, email, admin
     FROM cliente
     WHERE token=?
 """
@@ -63,7 +59,7 @@ SQL_OBTER_QUANTIDADE = """
 """
 
 SQL_OBTER_BUSCA = """
-    SELECT id, nome, cpf, data_nascimento, endereco, telefone, email, admin
+    SELECT id, nome, email, admin
     FROM cliente
     WHERE nome LIKE ? OR cpf LIKE ?
     ORDER BY nome
