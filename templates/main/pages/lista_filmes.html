@@ -1,0 +1,10 @@
+{% extends "pages/base.html" %}
+{% block subtitulo %}Contato{% endblock %}
+{% block conteudo %}
+<h1 class="display-5"><b>Pagina main da Lista de filmes</b></h1>
+<hr>
+<a class="btn btn-danger btn-lg" href="/cadastro_filme">Adicionar Filme</a>
+{% for filme in filmes %}
+    <p>{{ filme.nome }}</p>
+{% endfor %}
+{% endblock %}

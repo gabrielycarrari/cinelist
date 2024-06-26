@@ -24,12 +24,12 @@ router = APIRouter(prefix="/cliente")
 templates = obter_jinja_templates("templates/cliente")
 
 
-@router.get("/pedidos")
-async def get_pedidos(request: Request):
-    return templates.TemplateResponse(
-        "pages/pedidos.html",
-        {"request": request},
-    )
+# @router.get("/pedidos")
+# async def get_pedidos(request: Request):
+#     return templates.TemplateResponse(
+#         "pages/pedidos.html",
+#         {"request": request},
+#     )
 
 
 @router.get("/cadastro")
@@ -91,82 +91,82 @@ async def get_sair(request: Request):
     return response
 
 
-@router.get("/carrinho")
-async def get_carrinho(request: Request, id_produto: int = Query(0)):
+# @router.get("/carrinho")
+# async def get_carrinho(request: Request, id_produto: int = Query(0)):
     
     
-    pedidos = PedidoRepo.obter_por_estado(request.state.cliente.id, 1)
-    pedido_carrinho = pedidos[0] if pedidos else None
-    if pedido_carrinho:
-        itens_pedido = ItemPedidoRepo.obter_por_pedido(pedido_carrinho.id)
-    return templates.TemplateResponse(
-        "pages/carrinho.html",
-        {"request": request, "itens": itens_pedido},
-    )
+#     pedidos = PedidoRepo.obter_por_estado(request.state.cliente.id, 1)
+#     pedido_carrinho = pedidos[0] if pedidos else None
+#     if pedido_carrinho:
+#         itens_pedido = ItemPedidoRepo.obter_por_pedido(pedido_carrinho.id)
+#     return templates.TemplateResponse(
+#         "pages/carrinho.html",
+#         {"request": request, "itens": itens_pedido},
+#     )
 
-@router.post("/post_adicionar_carrinho", response_class=RedirectResponse)
-async def post_adicionar_carrinho(request: Request, id_produto: int = Form(...)):
-    produto = ProdutoRepo.obter_um(id_produto)
-    mensagem = f"O produto <b>{produto.nome}</b> foi adicionado ao carrinho."    
-    pedidos = PedidoRepo.obter_por_estado(request.state.cliente.id, 1)
-    pedido_carrinho = pedidos[0] if pedidos else None        
-    if pedido_carrinho == None:
-        pedido_carrinho = Pedido(0, datetime.now(), 0, request.state.cliente.endereco, 1, request.state.cliente.id)
-        pedido_carrinho = PedidoRepo.inserir(pedido_carrinho)
-    qtde = ItemPedidoRepo.obter_quantidade_por_produto(pedido_carrinho.id, id_produto)
-    if qtde == 0:            
-        item_pedido = ItemPedido(pedido_carrinho.id, id_produto, produto.nome, produto.preco, 1, 0)
-        ItemPedidoRepo.inserir(item_pedido)            
-    else:
-        ItemPedidoRepo.aumentar_quantidade_produto(pedido_carrinho.id, id_produto)
-        mensagem = f"O produto <b>{produto.nome}</b> já estava no carrinho e teve sua quantidade aumentada."        
-    response = RedirectResponse("/cliente/carrinho", status.HTTP_303_SEE_OTHER)
-    adicionar_mensagem_sucesso(response, mensagem)
-    return response
+# @router.post("/post_adicionar_carrinho", response_class=RedirectResponse)
+# async def post_adicionar_carrinho(request: Request, id_produto: int = Form(...)):
+#     produto = ProdutoRepo.obter_um(id_produto)
+#     mensagem = f"O produto <b>{produto.nome}</b> foi adicionado ao carrinho."    
+#     pedidos = PedidoRepo.obter_por_estado(request.state.cliente.id, 1)
+#     pedido_carrinho = pedidos[0] if pedidos else None        
+#     if pedido_carrinho == None:
+#         pedido_carrinho = Pedido(0, datetime.now(), 0, request.state.cliente.endereco, 1, request.state.cliente.id)
+#         pedido_carrinho = PedidoRepo.inserir(pedido_carrinho)
+#     qtde = ItemPedidoRepo.obter_quantidade_por_produto(pedido_carrinho.id, id_produto)
+#     if qtde == 0:            
+#         item_pedido = ItemPedido(pedido_carrinho.id, id_produto, produto.nome, produto.preco, 1, 0)
+#         ItemPedidoRepo.inserir(item_pedido)            
+#     else:
+#         ItemPedidoRepo.aumentar_quantidade_produto(pedido_carrinho.id, id_produto)
+#         mensagem = f"O produto <b>{produto.nome}</b> já estava no carrinho e teve sua quantidade aumentada."        
+#     response = RedirectResponse("/cliente/carrinho", status.HTTP_303_SEE_OTHER)
+#     adicionar_mensagem_sucesso(response, mensagem)
+#     return response
 
-@router.post("/post_aumentar_item", response_class=RedirectResponse)
-async def post_aumentar_item(request: Request, id_produto: int = Form(0)):
-    produto = ProdutoRepo.obter_um(id_produto)
-    pedidos = PedidoRepo.obter_por_estado(request.state.cliente.id, 1)
-    pedido_carrinho = pedidos[0] if pedidos else None
+# @router.post("/post_aumentar_item", response_class=RedirectResponse)
+# async def post_aumentar_item(request: Request, id_produto: int = Form(0)):
+#     produto = ProdutoRepo.obter_um(id_produto)
+#     pedidos = PedidoRepo.obter_por_estado(request.state.cliente.id, 1)
+#     pedido_carrinho = pedidos[0] if pedidos else None
     
-    if pedido_carrinho == None:
-        response = RedirectResponse(f"/produto?id={id_produto}", status.HTTP_303_SEE_OTHER)
-        adicionar_mensagem_alerta(f"Seu carrinho não foi encontrado. Adicione este produto ao carrinho novamente.")
-        return response
+#     if pedido_carrinho == None:
+#         response = RedirectResponse(f"/produto?id={id_produto}", status.HTTP_303_SEE_OTHER)
+#         adicionar_mensagem_alerta(f"Seu carrinho não foi encontrado. Adicione este produto ao carrinho novamente.")
+#         return response
 
-    qtde = ItemPedidoRepo.obter_quantidade_por_produto(pedido_carrinho.id, id_produto)
-    if qtde == 0:
-        response = RedirectResponse(f"/produto?id={id_produto}", status.HTTP_303_SEE_OTHER)
-        adicionar_mensagem_alerta(f"Este produto não foi encontrado em seu carrinho. Adicione-o novamente.")
-        return response
+#     qtde = ItemPedidoRepo.obter_quantidade_por_produto(pedido_carrinho.id, id_produto)
+#     if qtde == 0:
+#         response = RedirectResponse(f"/produto?id={id_produto}", status.HTTP_303_SEE_OTHER)
+#         adicionar_mensagem_alerta(f"Este produto não foi encontrado em seu carrinho. Adicione-o novamente.")
+#         return response
     
-    ItemPedidoRepo.aumentar_quantidade_produto(pedido_carrinho.id, id_produto)
-    response = RedirectResponse("/cliente/carrinho", status.HTTP_303_SEE_OTHER)
-    adicionar_mensagem_sucesso(response, f"O produto <b>{produto.nome}</b> teve sua quantidade aumentada para <b>{qtde+1}</b>.")
-    return response
+#     ItemPedidoRepo.aumentar_quantidade_produto(pedido_carrinho.id, id_produto)
+#     response = RedirectResponse("/cliente/carrinho", status.HTTP_303_SEE_OTHER)
+#     adicionar_mensagem_sucesso(response, f"O produto <b>{produto.nome}</b> teve sua quantidade aumentada para <b>{qtde+1}</b>.")
+#     return response
 
-@router.post("/post_reduzir_item", response_class=RedirectResponse)
-async def post_reduzir_item(request: Request, id_produto: int = Form(0)):
-    produto = ProdutoRepo.obter_um(id_produto)
-    pedidos = PedidoRepo.obter_por_estado(request.state.cliente.id, 1)
-    pedido_carrinho = pedidos[0] if pedidos else None
-    response = RedirectResponse("/cliente/carrinho", status.HTTP_303_SEE_OTHER)
+# @router.post("/post_reduzir_item", response_class=RedirectResponse)
+# async def post_reduzir_item(request: Request, id_produto: int = Form(0)):
+#     produto = ProdutoRepo.obter_um(id_produto)
+#     pedidos = PedidoRepo.obter_por_estado(request.state.cliente.id, 1)
+#     pedido_carrinho = pedidos[0] if pedidos else None
+#     response = RedirectResponse("/cliente/carrinho", status.HTTP_303_SEE_OTHER)
     
-    if pedido_carrinho == None:        
-        adicionar_mensagem_alerta(f"Seu carrinho não foi encontrado.")
-        return response
+#     if pedido_carrinho == None:        
+#         adicionar_mensagem_alerta(f"Seu carrinho não foi encontrado.")
+#         return response
 
-    qtde = ItemPedidoRepo.obter_quantidade_por_produto(pedido_carrinho.id, id_produto)
-    if qtde == 0:        
-        adicionar_mensagem_alerta(f"O produto {id_produto} não foi encontrado em seu carrinho.")
-        return response
+#     qtde = ItemPedidoRepo.obter_quantidade_por_produto(pedido_carrinho.id, id_produto)
+#     if qtde == 0:        
+#         adicionar_mensagem_alerta(f"O produto {id_produto} não foi encontrado em seu carrinho.")
+#         return response
     
-    if qtde == 1:
-        ItemPedidoRepo.excluir(pedido_carrinho.id, id_produto)        
-        adicionar_mensagem_sucesso(response, f"O produto <b>{produto.nome}</b> foi excluído do carrinho.")
-        return response
+#     if qtde == 1:
+#         ItemPedidoRepo.excluir(pedido_carrinho.id, id_produto)        
+#         adicionar_mensagem_sucesso(response, f"O produto <b>{produto.nome}</b> foi excluído do carrinho.")
+#         return response
     
-    ItemPedidoRepo.diminuir_quantidade_produto(pedido_carrinho.id, id_produto)    
-    adicionar_mensagem_sucesso(response, f"O produto <b>{produto.nome}</b> teve sua quantidade diminuída para <b>{qtde+1}</b>.")
-    return response
+#     ItemPedidoRepo.diminuir_quantidade_produto(pedido_carrinho.id, id_produto)    
+#     adicionar_mensagem_sucesso(response, f"O produto <b>{produto.nome}</b> teve sua quantidade diminuída para <b>{qtde+1}</b>.")
+#     return response

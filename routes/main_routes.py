@@ -4,6 +4,10 @@ from fastapi import APIRouter, HTTPException, Query, Request, status
 from fastapi.responses import HTMLResponse, JSONResponse
 
 from dtos.entrar_dto import EntrarDTO
+from dtos.novo_filme_dto import NovoFilmeDTO
+from models.filme_model import Filme
+from repositories.filme_repo import FilmeRepo
+from repositories.genero_repo import GeneroRepo
 from util.html import ler_html
 from dtos.novo_cliente_dto import NovoClienteDTO
 from models.cliente_model import Cliente
@@ -31,22 +35,60 @@ async def get_html(arquivo: str):
 
 @router.get("/")
 async def get_root(request: Request):
-    produtos = ProdutoRepo.obter_todos()
+    # produtos = ProdutoRepo.obter_todos()
     return templates.TemplateResponse(
-        "pages/index.html",
+        "pages/entrar.html",
         {
             "request": request,
-            "produtos": produtos,
+            # "produtos": produtos,
         },
     )
 
 
-@router.get("/contato")
-async def get_contato(request: Request):
+# @router.get("/contato")
+# async def get_contato(request: Request):
+#     return templates.TemplateResponse(
+#         "pages/contato.html",
+#         {"request": request},
+#     )
+
+@router.get("/cadastro_filme")
+async def get_cadastro(request: Request):
+    generos = GeneroRepo.obter_todos()
     return templates.TemplateResponse(
-        "pages/contato.html",
-        {"request": request},
+        "pages/cadastro_filme.html",
+        {
+            "request": request,
+            "generos": generos,
+        },
     )
+
+
+@router.get("/filmes")
+async def get_contato(request: Request):
+    filmes = FilmeRepo.obter_por_cliente(request.state.cliente.id)
+    return templates.TemplateResponse(
+        "pages/lista_filmes.html",
+        {"request": request,
+         "filmes": filmes},
+    )
+
+@router.post("/post_filme", response_class=JSONResponse)
+async def post_filme(filme_dto: NovoFilmeDTO, request: Request):
+    print(request.state.cliente.id)
+    id_cliente = request.state.cliente.id
+
+    if not GeneroRepo.obter_por_id(filme_dto.id_genero):
+        raise HTTPException(status_code=400, detail="Gênero não encontrado.")
+
+    filme_data = filme_dto.model_dump()
+    filme_data['id_cliente'] = id_cliente
+
+    print(filme_data)
+    novo_filme = FilmeRepo.inserir(Filme(**filme_data))
+    if not novo_filme or not novo_filme.id:
+        raise HTTPException(status_code=400, detail="Erro ao cadastrar filme.")
+    return {"redirect": {"url": "/filmes"}}
 
 
 @router.get("/cadastro")
@@ -110,7 +152,8 @@ async def post_entrar(entrar_dto: EntrarDTO):
         raise DatabaseError(
             "Não foi possível alterar o token do cliente no banco de dados."
         )
-    response = JSONResponse(content={"redirect": {"url": entrar_dto.return_url}})
+    # response = JSONResponse(content={"redirect": {"url": entrar_dto.return_url}})
+    response = JSONResponse(content={"redirect": {"url": "/filmes"}})
     adicionar_mensagem_sucesso(
         response,
         f"Olá, <b>{cliente_entrou.nome}</b>. Seja bem-vindo(a) à Loja Virtual!",
@@ -119,38 +162,38 @@ async def post_entrar(entrar_dto: EntrarDTO):
     return response
 
 
-@router.get("/produto/{id:int}")
-async def get_produto(request: Request, id: int):
-    produto = ProdutoRepo.obter_um(id)
-    return templates.TemplateResponse(
-        "pages/produto.html",
-        {
-            "request": request,
-            "produto": produto,
-        },
-    )
+# @router.get("/produto/{id:int}")
+# async def get_produto(request: Request, id: int):
+#     produto = ProdutoRepo.obter_um(id)
+#     return templates.TemplateResponse(
+#         "pages/produto.html",
+#         {
+#             "request": request,
+#             "produto": produto,
+#         },
+#     )
 
 
-@router.get("/buscar")
-async def get_buscar(
-    request: Request,
-    q: str,
-    p: int = 1,
-    tp: int = 6,
-    o: int = 1,
-):
-    produtos = ProdutoRepo.obter_busca(q, p, tp, o)
-    qtde_produtos = ProdutoRepo.obter_quantidade_busca(q)
-    qtde_paginas = math.ceil(qtde_produtos / float(tp))
-    return templates.TemplateResponse(
-        "pages/buscar.html",
-        {
-            "request": request,
-            "produtos": produtos,
-            "quantidade_paginas": qtde_paginas,
-            "tamanho_pagina": tp,
-            "pagina_atual": p,
-            "termo_busca": q,
-            "ordem": o,
-        },
-    )
+# @router.get("/buscar")
+# async def get_buscar(
+#     request: Request,
+#     q: str,
+#     p: int = 1,
+#     tp: int = 6,
+#     o: int = 1,
+# ):
+#     produtos = ProdutoRepo.obter_busca(q, p, tp, o)
+#     qtde_produtos = ProdutoRepo.obter_quantidade_busca(q)
+#     qtde_paginas = math.ceil(qtde_produtos / float(tp))
+#     return templates.TemplateResponse(
+#         "pages/buscar.html",
+#         {
+#             "request": request,
+#             "produtos": produtos,
+#             "quantidade_paginas": qtde_paginas,
+#             "tamanho_pagina": tp,
+#             "pagina_atual": p,
+#             "termo_busca": q,
+#             "ordem": o,
+#         },
+#     )

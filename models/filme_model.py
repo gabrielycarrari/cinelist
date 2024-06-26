@@ -10,7 +10,7 @@ class Filme():
     id: Optional[int] = None
     nome: Optional[str] = None
     sinopse: Optional[str] = None
-    genero: Optional[Genero] = None
-    cliente: Optional[Cliente] = None
+    id_genero: Optional[int] = None
+    id_cliente: Optional[int] = None
     avaliacao: Optional[str] = None
   

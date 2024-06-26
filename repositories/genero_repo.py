@@ -53,3 +53,29 @@ class GeneroRepo:
         except sqlite3.Error as ex:
             print(ex)
             return None
+        
+    @classmethod
+    def obter_todos(cls) -> List[Genero]:
+        try:
+            with obter_conexao() as conexao:
+                cursor = conexao.cursor()
+                tuplas = cursor.execute(SQL_OBTER_TODOS).fetchall()
+                generos = [Genero(*t) for t in tuplas]
+                return generos
+        except sqlite3.Error as ex:
+            print(ex)
+            return None
+        
+    @classmethod
+    def obter_por_id(cls, id: int) -> Optional[Genero]:
+        try:
+            with obter_conexao() as conexao:
+                cursor = conexao.cursor()
+                tupla = cursor.execute(SQL_OBTER_UM, (id,)).fetchone()
+                if tupla is None:
+                    return None
+                genero = Genero(*tupla)
+                return genero
+        except sqlite3.Error as ex:
+            print(ex)
+            return None

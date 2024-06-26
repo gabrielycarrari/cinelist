@@ -10,8 +10,6 @@ from routes import main_routes, cliente_routes
 from util.auth import checar_permissao, middleware_autenticacao
 from util.exceptions import configurar_excecoes
 
-# ProdutoRepo.criar_tabela()
-# ProdutoRepo.inserir_produtos_json("sql/produtos.json")
 GeneroRepo.criar_tabela()
 GeneroRepo.inserir_generos_json("sql/generos.json")
 ClienteRepo.criar_tabela()
