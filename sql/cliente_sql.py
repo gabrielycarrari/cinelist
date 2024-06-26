@@ -4,17 +4,16 @@ SQL_CRIAR_TABELA = """
         nome TEXT NOT NULL,
         email TEXT NOT NULL UNIQUE,
         senha TEXT NOT NULL,
-        admin BOOLEAN NOT NULL,
         token TEXT)
 """
 
 SQL_INSERIR = """
-    INSERT INTO cliente(nome, email, senha, admin)
-    VALUES (?, ?, ?, ?)
+    INSERT INTO cliente(nome, email, senha)
+    VALUES (?, ?, ?)
 """
 
 SQL_OBTER_TODOS = """
-    SELECT id, nome, email, senha, admin
+    SELECT id, nome, email, senha
     FROM cliente
     ORDER BY nome
 """
@@ -37,19 +36,19 @@ SQL_EXCLUIR = """
 """
 
 SQL_OBTER_UM = """
-    SELECT id, nome, email, admin
+    SELECT id, nome, email
     FROM cliente
     WHERE id=?
 """
 
 SQL_OBTER_POR_EMAIL = """
-    SELECT id, nome, email, senha, admin
+    SELECT id, nome, email, senha
     FROM cliente
     WHERE email=?
 """
 
 SQL_OBTER_POR_TOKEN = """
-    SELECT id, nome, email, admin
+    SELECT id, nome, email
     FROM cliente
     WHERE token=?
 """
@@ -59,7 +58,7 @@ SQL_OBTER_QUANTIDADE = """
 """
 
 SQL_OBTER_BUSCA = """
-    SELECT id, nome, email, admin
+    SELECT id, nome, email
     FROM cliente
     WHERE nome LIKE ? OR cpf LIKE ?
     ORDER BY nome
@@ -71,14 +70,9 @@ SQL_OBTER_QUANTIDADE_BUSCA = """
     WHERE nome LIKE ? OR cpf LIKE ?
 """
 
-SQL_TORNAR_ADMIN = """
-    UPDATE cliente
-    SET admin=1
-    WHERE id=?
-"""
 
-SQL_REVOGAR_ADMIN = """
+SQL_ALTERAR_SENHA = """
     UPDATE cliente
-    SET admin=0
+    SET senha=?
     WHERE id=?
 """

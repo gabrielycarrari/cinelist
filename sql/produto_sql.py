@@ -25,7 +25,7 @@ SQL_ALTERAR = """
 """
 
 SQL_EXCLUIR = """
-    DELETE FROM produto
+    DELETE FROM produto    
     WHERE id=?
 """
 

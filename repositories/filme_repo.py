@@ -14,3 +14,21 @@ class FilmeRepo:
             cursor = conexao.cursor()
             cursor.execute(SQL_CRIAR_TABELA)
 
+
+#     @classmethod
+#     def inserir(cls, filme: Filme) -> Optional[Filme]:
+#         try:
+#             with obter_conexao() as conexao:
+#                 cursor = conexao.cursor()
+#                 cursor.execute(SQL_INSERIR, (
+#                     produto.nome,
+#                     produto.preco,
+#                     produto.descricao,
+#                     produto.estoque
+#                 ))
+#                 if cursor.rowcount > 0:
+#                     produto.id = cursor.lastrowid
+#                     return produto
+#         except sqlite3.Error as ex:
+#             print(ex)
+#             return None

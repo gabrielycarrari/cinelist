@@ -1,2 +1,6 @@
-*/__pycache__/
+.venv
+html
 __pycache__/
+*.py[cod]
+.env
+*.pub
