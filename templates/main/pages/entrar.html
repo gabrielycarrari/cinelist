@@ -1,9 +1,9 @@
 {% extends "pages/base.html" %}
 {% block subtitulo %}Entrar{% endblock %}
 {% block conteudo %}
-<h1 class="display-5"><b>Entrar</b></h1>
-<hr>
-<form class="row json-form" action="/post_entrar" method="post">
+<h1 class="display-5 text-center"><b>Entrar</b></h1>
+<hr class="mb-4">
+<form class="row json-form justify-content-center" action="/post_entrar" method="post">
     <div class="col-12 col-md-6 col-xl-4">
         <div class="form-floating mb-3">
             <input type="email" class="form-control" id="email" name="email" placeholder=" ">
@@ -14,14 +14,14 @@
             <label for="senha">Senha</label>
         </div>
         <input type="hidden" name="return_url" value="{{ return_url }}">
-        <div class="mb-3">
-            <button class="btn btn-danger btn-lg" type="submit">Entrar</button>
+        <div class="mb-4 mt-4 text-center">
+            <button class="btn btn-danger btn-lg w-100" type="submit">Entrar</button>
         </div>
-        <p class="lead mb-2">
+        <p class="lead fs-6 mb-1 text-center">
             <a href="/recuperacaosenha" class="text-decoration-none text-danger">Esqueci minha senha</a>
         </p>
-        <p class="lead my-0">
-            <a href="/cadastro" class="text-decoration-none text-danger">Ainda não sou cadastrado</a>
+        <p class="lead fs-6 mb-3 text-center">
+            <a href="/cadastro" class="text-decoration-none text-danger">Não possui uma conta? Cadastre-se!</a>
         </p>
     </div>
 </form>

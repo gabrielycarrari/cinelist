@@ -4,7 +4,7 @@
 <h1 class="display-5"><b>Cadastre um Novo Filme!</b></h1>
 <hr>
 <form method="post" action="/post_filme" class="row json-form">
-    <div class="col-12">
+    <!-- <div class="col-12">
         <div class="form-floating mb-3">
             <input type="text" class="form-control" id="nome" name="nome" placeholder=" " required>
             <label for="nome">Nome do Filme</label>
@@ -28,6 +28,34 @@
         </div>
         <div class="mt-3">
             <button type="submit" class="btn btn-danger btn-lg">Enviar</button>
+        </div>
+    </div> -->
+    <div class="col-12 col-lg-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="nome" name="nome" placeholder=" ">
+            <label for="nome">Nome</label>
+        </div>
+        <div class="form-floating mb-3">
+            <textarea class="form-control" placeholder=" " name="sinopse" id="sinopse" style="height: 125px"></textarea>
+            <label for="sinopse">Sinopse</label>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="form-floating mb-3">
+            <select class="form-control" id="genero" name="id_genero" aria-label="Selecione o gênero" required>
+                <option value="">Selecione o gênero</option>
+                {% for genero in generos %}
+                    <option value="{{ genero.id }}">{{ genero.nome }}</option>
+                {% endfor %}
+            </select>
+            <label for="genero">Gênero</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="avaliacao" name="avaliacao" placeholder=" " required>
+            <label for="avaliacao">Comentário ou Avaliação</label>
+        </div>
+        <div class="my-3">
+            <button type="submit" class="btn btn-danger btn-lg w-50">Cadastrar</button>
         </div>
     </div>
 </form>

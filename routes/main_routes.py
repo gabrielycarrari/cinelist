@@ -88,7 +88,14 @@ async def post_filme(filme_dto: NovoFilmeDTO, request: Request):
     novo_filme = FilmeRepo.inserir(Filme(**filme_data))
     if not novo_filme or not novo_filme.id:
         raise HTTPException(status_code=400, detail="Erro ao cadastrar filme.")
-    return {"redirect": {"url": "/filmes"}}
+    
+    response = JSONResponse(content={"redirect": {"url": "/filmes"}})
+    adicionar_mensagem_sucesso(
+        response,
+        f"Filme <b>{novo_filme.nome}</b> cadastrado com sucesso!",
+    )
+    return response
+    
 
 
 @router.get("/cadastro")
@@ -156,7 +163,7 @@ async def post_entrar(entrar_dto: EntrarDTO):
     response = JSONResponse(content={"redirect": {"url": "/filmes"}})
     adicionar_mensagem_sucesso(
         response,
-        f"Olá, <b>{cliente_entrou.nome}</b>. Seja bem-vindo(a) à Loja Virtual!",
+        f"Olá, <b>{cliente_entrou.nome}</b>. Seja bem-vindo(a) ao CineList!",
     )
     adicionar_cookie_auth(response, token)
     return response
