@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   web:
-    container_name: cinelist
+    container_name: cinelist.cachoeiro.es
     build: .
     ports:
       - "8065:8000"
