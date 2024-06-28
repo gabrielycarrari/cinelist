@@ -3,11 +3,49 @@
 {% block conteudo %}
 <h1 class="display-5"><b>Meus Filmes</b></h1>
 <hr>
-<a class="btn btn-danger btn-lg" href="/cadastro_filme">
+<a class="btn btn-danger btn-lg mb-4" href="/cadastro_filme">
     <i class="bi bi-plus-circle me-2"></i>
     Adicionar Filme
 </a>
-{% for filme in filmes %}
-    <p>{{ filme.nome }}</p>
+{% for filme in filmes %}  
+    <ul class="list-group list-group-horizontal mb-2">
+        <a href="/alterar_filme/{{ filme.id }}" class="list-group-item list-group-item-action">
+            <div class="row align-items-center">
+                <div class="col-10 text-start">
+                    <div class="ms-2">
+                        <div class="fw-bold">{{ filme.nome }}</div>
+                        <div style="font-size: smaller;">Avaliação: {{ filme.avaliacao }}</div>
+                    </div>
+                </div>
+                <div class="col-2 text-center">
+                    <span class="badge {{ generos[filme.id_genero].nome|replace(' ', '-')|lower }}"> {{ generos[filme.id_genero].nome }}</span>
+                </div>
+            </div>
+        </a>
+        
+        <li class="list-group-item text-center">
+            <div class="fw-bold mb-1" style="font-size: smaller;">Ações</div>
+            <div class="row">
+                <div class="col-6">
+                    <a class="btn btn-outline-primary" href="/alterar_filme/{{ filme.id }}">
+                        <i class="bi bi-pencil-fill"></i>
+                    </a>
+                </div>
+                <!-- <div class="col-6">
+                    <a class="btn btn-outline-danger" href="#" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" onclick="setDeleteUrl('/delete_filme/{{ filme.id }}')">
+                        <i class="bi bi-trash3-fill"></i>
+                    </a>
+                </div> -->
+                <div class="col-6">
+                    <a class="btn btn-outline-danger" href="#"  onclick="deleteFilme('{{ filme.id }}')">
+                        <i class="bi bi-trash3-fill"></i>
+                    </a>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+<!-- {% include "includes/modal_confirm_delete.html" %} -->
 {% endfor %}
+<hr class="mt-4">
 {% endblock %}

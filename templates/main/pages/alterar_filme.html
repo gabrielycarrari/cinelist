@@ -1,35 +1,36 @@
 {% extends "pages/base.html" %}
-{% block subtitulo %}Cadastro de Filme{% endblock %}
+{% block subtitulo %}Alterar Filme{% endblock %}
 {% block conteudo %}
-<h1 class="display-5"><b>Cadastre um Novo Filme!</b></h1>
+<h1 class="display-5"><b>Alterar Filme</b></h1>
 <hr>
-<form method="post" action="/post_filme" class="row json-form">
+<form method="post" action="/post_alterar_filme/{{ filme.id }}" class="row json-form">
     <div class="col-12 col-lg-6">
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="nome" name="nome" placeholder=" ">
+            <input type="text" class="form-control" id="nome" name="nome" placeholder=" " value="{{ filme.nome }}">
             <label for="nome">Nome</label>
         </div>
         <div class="form-floating mb-3">
-            <textarea class="form-control" placeholder=" " name="sinopse" id="sinopse" style="height: 125px"></textarea>
+            <textarea class="form-control" placeholder=" " name="sinopse" id="sinopse" style="height: 125px" >{{ filme.sinopse }}</textarea>
             <label for="sinopse">Sinopse</label>
         </div>
     </div>
     <div class="col-12 col-lg-6">
         <div class="form-floating mb-3">
+            
             <select class="form-control" id="genero" name="id_genero" aria-label="Selecione o gênero" required>
-                <option value="">Selecione o gênero</option>
-                {% for genero in generos %}
-                    <option value="{{ genero.id }}">{{ genero.nome }}</option>
+                <option value="{{ filme.id_genero }}">{{ generos[filme.id_genero].nome }}</option>
+                {% for id in generos %}
+                    <option value="{{ id }}">{{ generos[id].nome }}</option>
                 {% endfor %}
             </select>
             <label for="genero">Gênero</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="avaliacao" name="avaliacao" placeholder=" " required>
+            <input type="text" class="form-control" id="avaliacao" name="avaliacao" placeholder=" " required value="{{ filme.avaliacao }}">
             <label for="avaliacao">Comentário ou Avaliação</label>
         </div>
         <div class="my-3">
-            <button type="submit" class="btn btn-danger btn-lg w-50">Cadastrar</button>
+            <button type="submit" class="btn btn-danger btn-lg w-50">Alterar</button>
         </div>
     </div>
 </form>

@@ -60,11 +60,7 @@ class ClienteRepo:
                     SQL_ALTERAR,
                     (
                         cliente.nome,
-                        # cliente.cpf,
-                        # cliente.data_nascimento,
-                        # cliente.endereco,
                         cliente.email,
-                        # cliente.telefone,
                         cliente.id,
                     ),
                 )

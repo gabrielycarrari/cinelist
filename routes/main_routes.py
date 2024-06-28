@@ -19,7 +19,7 @@ from util.auth import (
     obter_hash_senha,
 )
 
-from util.cookies import adicionar_cookie_auth, adicionar_mensagem_sucesso
+from util.cookies import adicionar_cookie_auth, adicionar_mensagem_erro, adicionar_mensagem_sucesso
 from util.pydantic import create_validation_errors
 from util.templates import obter_jinja_templates
 
@@ -67,15 +67,19 @@ async def get_cadastro(request: Request):
 @router.get("/filmes")
 async def get_contato(request: Request):
     filmes = FilmeRepo.obter_por_cliente(request.state.cliente.id)
+    lista_generos = GeneroRepo.obter_todos()
+    generos = {genero.id: genero for genero in lista_generos}
     return templates.TemplateResponse(
         "pages/lista_filmes.html",
-        {"request": request,
-         "filmes": filmes},
+        {
+            "request": request,
+            "filmes": filmes,
+            "generos": generos,
+            },
     )
 
 @router.post("/post_filme", response_class=JSONResponse)
 async def post_filme(filme_dto: NovoFilmeDTO, request: Request):
-    print(request.state.cliente.id)
     id_cliente = request.state.cliente.id
 
     if not GeneroRepo.obter_por_id(filme_dto.id_genero):
@@ -84,7 +88,6 @@ async def post_filme(filme_dto: NovoFilmeDTO, request: Request):
     filme_data = filme_dto.model_dump()
     filme_data['id_cliente'] = id_cliente
 
-    print(filme_data)
     novo_filme = FilmeRepo.inserir(Filme(**filme_data))
     if not novo_filme or not novo_filme.id:
         raise HTTPException(status_code=400, detail="Erro ao cadastrar filme.")
@@ -95,7 +98,56 @@ async def post_filme(filme_dto: NovoFilmeDTO, request: Request):
         f"Filme <b>{novo_filme.nome}</b> cadastrado com sucesso!",
     )
     return response
+
+
+@router.delete("/delete_filme/{id:int}", response_class=JSONResponse)
+async def delete_filme(id: int):
+    filme = FilmeRepo.obter_por_id(id)
+    if not filme or not filme.id:
+        raise HTTPException(status_code=400, detail="Filme não encontrado.")
+
+    if not FilmeRepo.excluir(id):
+        raise HTTPException(status_code=400, detail="Erro ao excluir filme.")
+   
+    response = JSONResponse(content={"redirect": {"url": "/filmes"}})
+    adicionar_mensagem_sucesso(
+        response,
+        f"Filme <b>{filme.nome}</b> deletado com sucesso!",
+    )
+    print(response)
+    return response
+
+
+@router.get("/alterar_filme/{id}")
+async def get_cadastro(request: Request, id: int):
+    lista_generos = GeneroRepo.obter_todos()
+    generos = {genero.id: genero for genero in lista_generos}
+    filme = FilmeRepo.obter_por_id(id)
+    return templates.TemplateResponse(
+        "pages/alterar_filme.html",
+        {
+            "request": request,
+            "filme": filme,
+            "generos": generos,
+        },
+    )
+
+@router.post("/post_alterar_filme/{id}", response_class=JSONResponse)
+async def post_alterar_filme(request: Request, filme_dto: NovoFilmeDTO, id: int):
+    if not GeneroRepo.obter_por_id(filme_dto.id_genero):
+        raise HTTPException(status_code=400, detail="Gênero não encontrado.")
     
+    filme_data = filme_dto.model_dump()
+    id_cliente = request.state.cliente.id
+    filme_data['id_cliente'] = id_cliente
+    response = JSONResponse({"redirect": {"url": "/filmes"}})
+    if FilmeRepo.alterar(Filme(id, **filme_data)):
+        adicionar_mensagem_sucesso(response, "Filme alterado com sucesso!")
+    else:
+        adicionar_mensagem_erro(
+            response, "Não foi possível alterar os dados do filme!"
+        )
+    return response
 
 
 @router.get("/cadastro")

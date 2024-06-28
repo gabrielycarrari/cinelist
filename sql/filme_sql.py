@@ -35,7 +35,7 @@ SQL_EXCLUIR = """
 
 SQL_OBTER_UM = """
     SELECT  id, nome, sinopse, id_genero, id_cliente, avaliacao
-    FROM filme LEFT JOIN cliente ON id_cliente = cliente.id
+    FROM filme
     WHERE id=?
 """
 

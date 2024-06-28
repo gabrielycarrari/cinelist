@@ -1,0 +1,99 @@
+.ação {
+    background-color: #FF4500;
+    color: white;
+}
+
+.aventura {
+    background-color: #FFD700;
+    color: black;
+}
+
+.comédia {
+    background-color: #FFFF00;
+    color: black;
+}
+
+.drama {
+    background-color: #A9A9A9;
+    color: white;
+}
+
+.terror {
+    background-color: #000000;
+    color: white;
+}
+
+.ficção-científica {
+    background-color: #00CED1;
+    color: black;
+}
+
+.fantasia {
+    background-color: #8A2BE2;
+    color: white;
+}
+
+.suspense {
+    background-color: #2F4F4F;
+    color: white;
+}
+
+.romance {
+    background-color: #d43c3c;
+    color: white;
+}
+
+.documentário {
+    background-color: #4682B4;
+    color: white;
+}
+
+.musical {
+    background-color: #FF1493;
+    color: white;
+}
+
+.animação {
+    background-color: #FFA500;
+    color: black;
+}
+
+.histórico {
+    background-color: #CD853F;
+    color: white;
+}
+
+.biografia {
+    background-color: #8B4513;
+    color: white;
+}
+
+.guerra {
+    background-color: #808080;
+    color: white;
+}
+
+.western {
+    background-color: #D2691E; 
+    color: white;
+}
+
+.mistério {
+    background-color: #4B0082;
+    color: white;
+}
+
+.esporte {
+    background-color: #32CD32;
+    color: black;
+}
+
+.família {
+    background-color: #FFB6C1;
+    color: black;
+}
+
+.policial {
+    background-color: #000080;
+    color: white;
+}
