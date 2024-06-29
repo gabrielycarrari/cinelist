@@ -3,9 +3,6 @@ from fastapi.staticfiles import StaticFiles
 from repositories.cliente_repo import ClienteRepo
 from repositories.filme_repo import FilmeRepo
 from repositories.genero_repo import GeneroRepo
-from repositories.item_pedido_repo import ItemPedidoRepo
-from repositories.pedido_repo import PedidoRepo
-from repositories.produto_repo import ProdutoRepo
 from routes import main_routes, cliente_routes
 from util.auth import checar_permissao, middleware_autenticacao
 from util.exceptions import configurar_excecoes

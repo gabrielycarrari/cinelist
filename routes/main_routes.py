@@ -12,7 +12,6 @@ from util.html import ler_html
 from dtos.novo_cliente_dto import NovoClienteDTO
 from models.cliente_model import Cliente
 from repositories.cliente_repo import ClienteRepo
-from repositories.produto_repo import ProdutoRepo
 from util.auth import (
     conferir_senha,
     gerar_token,
@@ -35,22 +34,20 @@ async def get_html(arquivo: str):
 
 @router.get("/")
 async def get_root(request: Request):
-    # produtos = ProdutoRepo.obter_todos()
     return templates.TemplateResponse(
         "pages/entrar.html",
         {
             "request": request,
-            # "produtos": produtos,
         },
     )
 
 
-# @router.get("/contato")
-# async def get_contato(request: Request):
-#     return templates.TemplateResponse(
-#         "pages/contato.html",
-#         {"request": request},
-#     )
+@router.get("/sobre")
+async def get_sobre(request: Request):
+    return templates.TemplateResponse(
+        "pages/sobre.html",
+        {"request": request},
+    )
 
 @router.get("/cadastro_filme")
 async def get_cadastro(request: Request):
@@ -219,40 +216,3 @@ async def post_entrar(entrar_dto: EntrarDTO):
     )
     adicionar_cookie_auth(response, token)
     return response
-
-
-# @router.get("/produto/{id:int}")
-# async def get_produto(request: Request, id: int):
-#     produto = ProdutoRepo.obter_um(id)
-#     return templates.TemplateResponse(
-#         "pages/produto.html",
-#         {
-#             "request": request,
-#             "produto": produto,
-#         },
-#     )
-
-
-# @router.get("/buscar")
-# async def get_buscar(
-#     request: Request,
-#     q: str,
-#     p: int = 1,
-#     tp: int = 6,
-#     o: int = 1,
-# ):
-#     produtos = ProdutoRepo.obter_busca(q, p, tp, o)
-#     qtde_produtos = ProdutoRepo.obter_quantidade_busca(q)
-#     qtde_paginas = math.ceil(qtde_produtos / float(tp))
-#     return templates.TemplateResponse(
-#         "pages/buscar.html",
-#         {
-#             "request": request,
-#             "produtos": produtos,
-#             "quantidade_paginas": qtde_paginas,
-#             "tamanho_pagina": tp,
-#             "pagina_atual": p,
-#             "termo_busca": q,
-#             "ordem": o,
-#         },
-#     )
