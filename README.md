@@ -17,7 +17,7 @@ O projeto CineList é parte da disciplina de Desenvolvimento para Web, ministrad
         - Control + F5: para executar normalmente
         - F5: para executar no modo debug
    - A API estará disponível em `http://127.0.0.1:8000`.
-   - 
+     
 ## 👩‍💻 Autores
 O projeto foi desenvolvido pelos alunos Gabriely Machado Carrari e Vitor Miller de Toledo, ambos técnicos em Informática formados pelo IFES Campus Cachoeiro e, atualmente, cursando o sétimo período do curso de Sistemas de Informação pela mesma instituição.
 
